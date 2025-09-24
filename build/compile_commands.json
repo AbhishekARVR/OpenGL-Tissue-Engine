@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/Users/masih/Abhishek/cmake/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/cc  -I/Users/masih/Abhishek/cmake/external/glad -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk -o CMakeFiles/glad_obj.dir/external/glad/glad.c.o -c /Users/masih/Abhishek/cmake/external/glad/glad.c",
+  "file": "/Users/masih/Abhishek/cmake/external/glad/glad.c",
+  "output": "CMakeFiles/glad_obj.dir/external/glad/glad.c.o"
+},
+{
+  "directory": "/Users/masih/Abhishek/cmake/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/masih/Downloads/glfw-3.4.bin.MACOS/include -I/Users/masih/Abhishek/cmake/external/glad -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk -o CMakeFiles/Cmake.dir/main.cpp.o -c /Users/masih/Abhishek/cmake/main.cpp",
+  "file": "/Users/masih/Abhishek/cmake/main.cpp",
+  "output": "CMakeFiles/Cmake.dir/main.cpp.o"
+}
+]
