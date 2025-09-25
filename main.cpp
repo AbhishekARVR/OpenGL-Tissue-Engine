@@ -21,7 +21,7 @@ const char *fragmentShaderSource = "#version 330 core\n"
     "uniform vec4 ourColor; // we set this variable in the OpenGL code.\n"
     "void main()\n"
     "{\n"
-    "    FragColor = vec4(0.0, ourColor.y, 0.0);\n"
+    "    FragColor = vec4(0.0, ourColor.y, 0.0, 1.0);\n"
     "}\n\0";
 
 int main()
