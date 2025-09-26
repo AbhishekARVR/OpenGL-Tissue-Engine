@@ -6,8 +6,6 @@ project(Cmake VERSION 0.1.0 LANGUAGES C CXX)
 set(GLFW_INCLUDE_DIR /Users/masih/Downloads/glfw-3.4.bin.MACOS/include)
 set(GLFW_LIB_DIR /Users/masih/Downloads/glfw-3.4.bin.MACOS/lib-universal)
 
-
-
 # GLAD
 add_library(glad_obj OBJECT external/glad/glad.c)
 set_target_properties(glad_obj PROPERTIES INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/external/glad")

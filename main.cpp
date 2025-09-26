@@ -1,32 +1,21 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "shaders/shader.h"
+
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+std::vector<float> createMeshVertices(int edgeCount, int maxEdgeWidth);
+std::vector<unsigned int> createMeshIndices(int edgeCount, int maxEdgeWidth);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-const char *vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "layout (location = 1) in vec3 aColor;\n"
-    "out vec3 ourColor;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "   ourColor = aColor;\n"
-    "}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "in vec3 ourColor; // we set this variable in the OpenGL code.\n"
-    "uniform float sin;\n"
-    "void main()\n"
-    "{\n"
-    "    FragColor = vec4(ourColor*sin, 1.0);\n"
-    "}\n\0";
+const unsigned int EDGE_COUNT = 2;
+const unsigned int MAX_EDGE_WIDTH = 1;
 
 int main()
 {
@@ -61,82 +50,40 @@ int main()
         return -1;
     }
 
-
     // build and compile our shader program
     // ------------------------------------
-    // vertex shader
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    // check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // fragment shader
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    // check for shader compile errors
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // link shaders
-    unsigned int shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    // check for linking errors
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    Shader ourShader("../shaders/VertexShader.vert", "../shaders/FragmentShader.frag"); // you can name your shader files however you like
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
-    float vertices[] = {
-    // positions         // colors
-     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
-    }; 
+    std::vector<float> vertices = createMeshVertices(EDGE_COUNT,MAX_EDGE_WIDTH); // we have 3 coordinates per vertex and 3 color values
+    std::vector<unsigned int> indices = createMeshIndices(EDGE_COUNT,MAX_EDGE_WIDTH); // we have 3 coordinates per vertex and 3 color values
 
-    unsigned int VBO, VAO;
+    unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+    
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
     // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-
-    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
 
     // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-    glBindVertexArray(0); 
+    // glBindVertexArray(0);
 
-
-    // uncomment this call to draw in wireframe polygons.
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // render loop
     // -----------
@@ -151,19 +98,10 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
-
-
-        // draw our first triangle
-        float timeValue = glfwGetTime();
-        float sinValue = (sin(timeValue) / 2.0f) + 0.5f;
-        int vertexColorLocation = glGetUniformLocation(shaderProgram, "sin");
-        glUniform1f(vertexColorLocation, sinValue);
-        
-        glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        // glBindVertexArray(0); // no need to unbind it every time 
- 
+        // render the triangle
+        ourShader.use();
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
@@ -174,8 +112,8 @@ int main()
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
-
+    glDeleteBuffers(1, &EBO);
+    ourShader.ID = 0;
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
@@ -197,4 +135,40 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+}
+
+std::vector<float> createMeshVertices(int edgeCount, int maxEdgeWidth){
+    std::vector<float> vertices(edgeCount * edgeCount * 6); // each vertex: 3 pos + 3 color
+    
+    for(int i=0; i<edgeCount; i++){
+        for(int j=0; j<edgeCount; j++)
+        {
+            vertices[(i*edgeCount+j)*6+0] = -(maxEdgeWidth/2.0f) + j/(edgeCount-1.0f); 
+            vertices[(i*edgeCount+j)*6+1] = -(maxEdgeWidth/2.0f) + i/(edgeCount-1.0f);
+            vertices[(i*edgeCount+j)*6+2] = 0.0f;
+
+            vertices[(i*edgeCount+j)*6+3] = (float)i/edgeCount;
+            vertices[(i*edgeCount+j)*6+4] = (float)j/edgeCount;
+            vertices[(i*edgeCount+j)*6+5] = 0.0f;
+        }
+    }
+
+    return vertices;
+}
+
+std::vector<unsigned int> createMeshIndices(int edgeCount, int maxEdgeWidth){
+    std::vector<unsigned int> indices((edgeCount-1)*(edgeCount-1)*6); // we have 6 indices per quad
+    for(int i=0; i<edgeCount-1; i++){
+        for(int j=0; j<edgeCount-1; j++)
+        {
+            indices[(i*(edgeCount-1)+j)*6+0] = i*edgeCount + j;         // top left
+            indices[(i*(edgeCount-1)+j)*6+1] = i*edgeCount + (j+1);     // top right
+            indices[(i*(edgeCount-1)+j)*6+2] = (i+1)*edgeCount + (j+1); // bottom right
+            indices[(i*(edgeCount-1)+j)*6+3] = i*edgeCount + j;         // top left
+            indices[(i*(edgeCount-1)+j)*6+4] = (i+1)*edgeCount + (j+1); // bottom right
+            indices[(i*(edgeCount-1)+j)*6+5] = (i+1)*edgeCount + j;     // bottom left
+        }
+    }
+
+    return indices;
 }
