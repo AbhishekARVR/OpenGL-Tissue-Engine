@@ -94,6 +94,7 @@ Cmake_EXTERNAL_OBJECTS = \
 Cmake: CMakeFiles/Cmake.dir/main.cpp.o
 Cmake: CMakeFiles/glad_obj.dir/external/glad/glad.c.o
 Cmake: CMakeFiles/Cmake.dir/build.make
+Cmake: /opt/homebrew/lib/libglm.dylib
 Cmake: CMakeFiles/Cmake.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/masih/Abhishek/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Cmake"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Cmake.dir/link.txt --verbose=$(VERBOSE)

@@ -5,7 +5,7 @@
 # compile CXX with /Library/Developer/CommandLineTools/usr/bin/c++
 C_DEFINES = 
 
-C_INCLUDES = -I/Users/masih/Downloads/glfw-3.4.bin.MACOS/include -I/Users/masih/Abhishek/cmake/external/glad
+C_INCLUDES = -I/Users/masih/Downloads/glfw-3.4.bin.MACOS/include -I/Users/masih/Abhishek/cmake/external/glad -isystem /opt/homebrew/include
 
 C_FLAGSarm64 = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk
 
@@ -13,7 +13,7 @@ C_FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacO
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/masih/Downloads/glfw-3.4.bin.MACOS/include -I/Users/masih/Abhishek/cmake/external/glad
+CXX_INCLUDES = -I/Users/masih/Downloads/glfw-3.4.bin.MACOS/include -I/Users/masih/Abhishek/cmake/external/glad -isystem /opt/homebrew/include
 
 CXX_FLAGSarm64 = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk
 

@@ -4,6 +4,7 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
+                "/Users/masih/Downloads/glm-",
                 "/Users/masih/Downloads/glfw-3.4.bin.MACOS/include"
             ],
             "defines": [],

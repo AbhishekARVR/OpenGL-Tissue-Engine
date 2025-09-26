@@ -50,9 +50,13 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
+    
+    std::cout << "GLAD initialized successfully" << std::endl;
+    
     Mesh mesh(EDGE_COUNT, MAX_EDGE_WIDTH, "../shaders/VertexShader.vert", "../shaders/FragmentShader.frag");
 
+    std::cout << "Mesh created successfully" << std::endl;
+    
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))

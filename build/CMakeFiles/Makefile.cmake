@@ -36,6 +36,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/opt/homebrew/Cellar/cmake/3.30.4/share/cmake/Modules/Platform/Darwin-Initialize.cmake"
   "/opt/homebrew/Cellar/cmake/3.30.4/share/cmake/Modules/Platform/Darwin.cmake"
   "/opt/homebrew/Cellar/cmake/3.30.4/share/cmake/Modules/Platform/UnixPaths.cmake"
+  "/opt/homebrew/share/glm/glmConfig-release.cmake"
+  "/opt/homebrew/share/glm/glmConfig.cmake"
+  "/opt/homebrew/share/glm/glmConfigVersion.cmake"
   )
 
 # The corresponding makefile is:

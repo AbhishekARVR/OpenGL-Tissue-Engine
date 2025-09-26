@@ -270,6 +270,9 @@ MEMORYCHECK_SUPPRESSIONS_FILE:FILEPATH=
 //Name of the computer/site where compile is being run
 SITE:STRING=Masihs-MacBook-Air.local
 
+//The directory containing a CMake configuration file for glm.
+glm_DIR:PATH=/opt/homebrew/share/glm
+
 
 ########################
 # INTERNAL cache entries
