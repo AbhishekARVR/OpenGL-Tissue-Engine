@@ -966,11 +966,12 @@ CMakeFiles/Cmake.dir/main.cpp.o: /Users/masih/Abhishek/cmake/main.cpp \
   /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stdint.h \
   /Users/masih/Abhishek/cmake/external/glad/KHR/khrplatform.h \
   /Users/masih/Abhishek/cmake/external/glad/glad/glad.h \
-  /Users/masih/Abhishek/cmake/shaders/shader.h \
+  /Users/masih/Abhishek/cmake/mesh.h \
+  /Users/masih/Abhishek/cmake/shader.h \
   /Users/masih/Downloads/glfw-3.4.bin.MACOS/include/GLFW/glfw3.h
 
 
-/Users/masih/Abhishek/cmake/shaders/shader.h:
+/Users/masih/Abhishek/cmake/mesh.h:
 
 /Users/masih/Abhishek/cmake/external/glad/glad/glad.h:
 
@@ -1141,6 +1142,8 @@ CMakeFiles/Cmake.dir/main.cpp.o: /Users/masih/Abhishek/cmake/main.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/machine/_mcontext.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/machine/_endian.h:
+
+/Users/masih/Abhishek/cmake/shader.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/mach/machine/_structs.h:
 

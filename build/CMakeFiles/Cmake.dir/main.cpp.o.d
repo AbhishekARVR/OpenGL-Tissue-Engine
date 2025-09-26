@@ -28,7 +28,7 @@ CMakeFiles/Cmake.dir/main.cpp.o: /Users/masih/Abhishek/cmake/main.cpp \
   /Users/masih/Downloads/glfw-3.4.bin.MACOS/include/GLFW/glfw3.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stddef.h \
-  /Users/masih/Abhishek/cmake/shaders/shader.h \
+  /Users/masih/Abhishek/cmake/shader.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/string \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/__algorithm/max.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/__algorithm/comp.h \
@@ -964,4 +964,5 @@ CMakeFiles/Cmake.dir/main.cpp.o: /Users/masih/Abhishek/cmake/main.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/__filesystem/u8path.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/sstream \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/iostream
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.0.sdk/usr/include/c++/v1/iostream \
+  /Users/masih/Abhishek/cmake/mesh.h
