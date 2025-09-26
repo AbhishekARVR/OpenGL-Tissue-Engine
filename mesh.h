@@ -25,10 +25,16 @@ class Mesh
     public: 
     unsigned int VBO, VAO, EBO;
     Shader shader;
+
+    private:
+    int edgeCount;
+    int maxEdgeWidth;
+
+    public:
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
     Mesh(int edgeCount, int maxEdgeWidth, const char* vertexPath, const char* fragmentPath)
-        : shader(vertexPath, fragmentPath)
+        : shader(vertexPath, fragmentPath), edgeCount(edgeCount), maxEdgeWidth(maxEdgeWidth)
     {
         std::vector<float> vertices = createMeshVertices(edgeCount,maxEdgeWidth); // we have 3 coordinates per vertex and 3 color values
         std::vector<unsigned int> indices = createMeshIndices(edgeCount,maxEdgeWidth); // we have 3 coordinates per vertex and 3 color values
@@ -51,6 +57,7 @@ class Mesh
         // color attribute
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
+        
     }
 
     void unbind(){
@@ -73,8 +80,8 @@ class Mesh
     void draw(){
         shader.use();
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        std::cout << "Drawing mesh " << VAO << std::endl;
+        glDrawElements(GL_TRIANGLES, (edgeCount - 1) * (edgeCount - 1) * 6, GL_UNSIGNED_INT, 0);
+        // std::cout << "Drawing mesh " << VAO << std::endl;
     }
 
     // utility function for creating mesh vertices and indices.
@@ -87,8 +94,8 @@ class Mesh
         for(int i=0; i<edgeCount; i++){
             for(int j=0; j<edgeCount; j++)
             {
-                vertices[(i*edgeCount+j)*6+0] = -(maxEdgeWidth/2.0f) + j/(edgeCount-1.0f); 
-                vertices[(i*edgeCount+j)*6+1] = -(maxEdgeWidth/2.0f) + i/(edgeCount-1.0f);
+                vertices[(i*edgeCount+j)*6+0] = -(maxEdgeWidth/2.0f) + j*(maxEdgeWidth/(edgeCount-1.0f)); 
+                vertices[(i*edgeCount+j)*6+1] = -(maxEdgeWidth/2.0f) + i*(maxEdgeWidth/(edgeCount-1.0f));
                 vertices[(i*edgeCount+j)*6+2] = 0.0f;
 
                 vertices[(i*edgeCount+j)*6+3] = (float)i/edgeCount;
