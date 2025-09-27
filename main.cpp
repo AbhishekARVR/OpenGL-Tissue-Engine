@@ -8,15 +8,21 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
-std::vector<float> createMeshVertices(int edgeCount, int maxEdgeWidth);
-std::vector<unsigned int> createMeshIndices(int edgeCount, int maxEdgeWidth);
+
+float lastTime = 0.0f;
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-const unsigned int EDGE_COUNT = 2;
+const unsigned int EDGE_COUNT = 20;
 const unsigned int MAX_EDGE_WIDTH = 1;
+const unsigned int ITERATIONS = 200;
+
+bool mousePressed = false;
+glm::vec2 lastMousePos(0.0f, 0.0f);
+
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
 int main()
 {
@@ -42,6 +48,8 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetMouseButtonCallback(window, mouseButtonCallback);
+
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -54,7 +62,6 @@ int main()
     std::cout << "GLAD initialized successfully" << std::endl;
     
     Mesh mesh(EDGE_COUNT, MAX_EDGE_WIDTH, "../shaders/VertexShader.vert", "../shaders/FragmentShader.frag");
-
     std::cout << "Mesh created successfully" << std::endl;
     
     // render loop
@@ -69,6 +76,35 @@ int main()
         // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        float currentTime = glfwGetTime();
+        float deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+
+        if(mousePressed)
+        {
+            double xpos, ypos;
+            glfwGetCursorPos(window, &xpos, &ypos);
+            glm::vec2 mousePos = glm::vec2((xpos / SCR_WIDTH) * 2.0f - 1.0f, 1.0f - (ypos / SCR_HEIGHT) * 2.0f);
+            if(lastMousePos == glm::vec2(0.0f, 0.0f)) lastMousePos = mousePos;
+
+            glm::vec2 deltaMouse = mousePos - lastMousePos;
+            lastMousePos = mousePos;
+
+            mesh.positions[EDGE_COUNT- 1] += glm::vec3(deltaMouse, 0.0f);
+            mesh.velocities[EDGE_COUNT - 1] = glm::vec3(deltaMouse / deltaTime, 0.0f);
+        }
+        else
+        {
+            lastMousePos = glm::vec2(0.0f, 0.0f);
+        }
+        
+        mesh.addGravity(deltaTime, glm::vec3(0.0f, -0.5f, 0.0f));
+        mesh.applyDamping(0.01f);
+        mesh.updateEstimatedPositions(deltaTime);
+        for(int i=0; i<ITERATIONS; i++) mesh.SolveAllStretchConstraints();
+        mesh.updateVelocitiesAndPositions(deltaTime);
+        mesh.updatePositions();
 
         // render the triangle
         mesh.draw();
@@ -102,4 +138,16 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+}
+
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+        mousePressed = true;
+    }
+    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+    {
+        mousePressed = false;
+    }
 }
