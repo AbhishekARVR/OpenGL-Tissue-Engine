@@ -15,9 +15,9 @@ float lastTime = 0.0f;
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-const unsigned int EDGE_COUNT = 20;
+const unsigned int EDGE_COUNT = 40;
 const unsigned int MAX_EDGE_WIDTH = 1;
-const unsigned int ITERATIONS = 200;
+const unsigned int ITERATIONS = 20;
 
 bool mousePressed = false;
 glm::vec2 lastMousePos(0.0f, 0.0f);

@@ -43,10 +43,10 @@ class Mesh
     public:
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
-    Mesh(int edgeCount, int maxEdgeWidth, const char* vertexPath, const char* fragmentPath, float mass=0.1f)
+    Mesh(int edgeCount, int maxEdgeWidth, const char* vertexPath, const char* fragmentPath, float mass=0.001f)
         : shader(vertexPath, fragmentPath), edgeCount(edgeCount), maxEdgeWidth(maxEdgeWidth), weight(1.0f/mass)
     {
-        dampingFactor = 0.1f;
+        dampingFactor = 0.75f;
 
 
         positions = createPositions(edgeCount,maxEdgeWidth);
@@ -341,8 +341,8 @@ class Mesh
         float wSum = w1 + w2;
         if(wSum == 0.0f) return;        
 
-        if(isVerticesFixed[i1] == 0) estimatedPositions[i1] -= (w1/wSum) * deltaLength * deltaPNormalized * 0.01f;// * 0.01 is STIFFNESS;
-        if(isVerticesFixed[i2] == 0) estimatedPositions[i2] += (w2/wSum) * deltaLength * deltaPNormalized * 0.01f;// * STIFFNESS;
+        if(isVerticesFixed[i1] == 0) estimatedPositions[i1] -= (w1/wSum) * deltaLength * deltaPNormalized * 0.25f;// * 0.01 is STIFFNESS;
+        if(isVerticesFixed[i2] == 0) estimatedPositions[i2] += (w2/wSum) * deltaLength * deltaPNormalized * 0.25f;// * STIFFNESS;
     }
 };
     
