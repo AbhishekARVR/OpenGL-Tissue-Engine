@@ -93,10 +93,12 @@ int main()
 
             mesh.positions[EDGE_COUNT- 1] += glm::vec3(deltaMouse, 0.0f);
             mesh.velocities[EDGE_COUNT - 1] = glm::vec3(deltaMouse / deltaTime, 0.0f);
+            mesh.isVerticesFixed[EDGE_COUNT - 1] = 1;
         }
         else
         {
             lastMousePos = glm::vec2(0.0f, 0.0f);
+            mesh.isVerticesFixed[EDGE_COUNT - 1] = 0;
         }
         
         mesh.addGravity(deltaTime, glm::vec3(0.0f, -0.5f, 0.0f));
